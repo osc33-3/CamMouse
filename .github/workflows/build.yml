@@ -1,0 +1,37 @@
+name: Compilar app iPhone
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar XcodeGen
+        run: brew install xcodegen
+
+      - name: Generar proyecto de Xcode
+        run: xcodegen generate
+
+      - name: Compilar (sin firmar; Sideloadly la firma al instalar)
+        run: |
+          xcodebuild -project CamMouse.xcodeproj -scheme CamMouse \
+            -configuration Release -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            build
+
+      - name: Empaquetar .ipa
+        run: |
+          mkdir Payload
+          cp -R build/Build/Products/Release-iphoneos/CamMouse.app Payload/
+          zip -qry CamMouse.ipa Payload
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CamMouse-ipa
+          path: CamMouse.ipa
