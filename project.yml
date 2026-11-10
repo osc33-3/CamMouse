@@ -1,0 +1,27 @@
+name: CamMouse
+options:
+  bundleIdPrefix: com.oscar
+  deploymentTarget:
+    iOS: "17.0"
+targets:
+  CamMouse:
+    type: application
+    platform: iOS
+    sources: [Sources]
+    scheme: {}
+    info:
+      path: Info.plist
+      properties:
+        CFBundleDisplayName: CamMouse
+        CFBundleShortVersionString: "1.0"
+        CFBundleVersion: "1"
+        UILaunchScreen: {}
+        UIRequiresFullScreen: true
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        NSCameraUsageDescription: "La cámara mira a la mesa para saber cuánto mueves el móvil."
+        NSLocalNetworkUsageDescription: "Para enviar los movimientos del ratón a tu ordenador por WiFi."
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.oscar.cammouse
+        TARGETED_DEVICE_FAMILY: "1"
+        SWIFT_VERSION: "5.0"
