@@ -4,6 +4,9 @@ on:
   push:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: macos-15
@@ -35,3 +38,10 @@ jobs:
         with:
           name: CamMouse-ipa
           path: CamMouse.ipa
+
+      - name: Publicar como descarga (sin necesidad de iniciar sesion)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete ultima -y --cleanup-tag || true
+          gh release create ultima CamMouse.ipa --title "CamMouse (ultima version)" --notes "App compilada automaticamente"
